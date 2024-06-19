@@ -13,11 +13,11 @@
 }
 
 .accent:hover {
-  background: #262495;
+  background: var(--primary-hover-color);
 }
 
 .accent {
-  background: #312EB5;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--white-color);
   border: none;
 }
