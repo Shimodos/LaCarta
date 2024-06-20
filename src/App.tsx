@@ -1,10 +1,25 @@
 import { MouseEvent, useState } from 'react';
 import Button from './components/Button/Button';
 import Input from './components/Input/Input';
-import { Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Menu } from './components/pages/Menu/Menu';
 import { Cart } from './components/pages/Cart/Cart';
 import { Error } from './components/pages/Error/Erorr';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Menu />,
+  },
+  {
+    path: '/cart',
+    element: <Cart />,
+  },
+  {
+    path: '*',
+    element: <Error />,
+  },
+]);
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -25,11 +40,7 @@ function App() {
         <a href="/">Menu</a>
         <a href="/cart">Cart</a>
       </div>
-      <Routes>
-        <Route path="/" element={<Menu />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      <RouterProvider router={router} />
     </>
   );
 }
