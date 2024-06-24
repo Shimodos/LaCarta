@@ -35,6 +35,14 @@
   text-decoration: none;
 }
 
+.link:hover {
+  color: var(--primary-color);
+}
+
+.active {
+  color: var(--primary-color);
+}
+
 .user {
   display: flex;
   flex-direction: column;
