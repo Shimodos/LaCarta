@@ -1,0 +1,29 @@
+.input {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+
+  box-shadow: 15px 20px 45px 0px rgba(233, 233, 233, 0.25);
+  background: #FCFCFD;
+  padding: 16px 30px 16px 44px;
+  min-width: 160px;
+}
+
+.input:focus {
+  outline: none;
+  border: 1px solid var(--primary-color);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.serach-icon {
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  transform: translateY(-50%);
+}

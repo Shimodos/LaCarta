@@ -75,3 +75,8 @@
   line-height: 19px;
   color: var(--text-secondery-color);
 }
+
+.content {
+  padding: 40px 60px;
+  width: 100%;
+}
