@@ -29,7 +29,7 @@ export function Layout(): JSX.Element {
           </NavLink>
         </div>
         <Button className={styles['exit']}>
-          <img src="out.svg" alt="Exite Icon" />
+          <img src="/out.svg" alt="Exite Icon" />
           Logout
         </Button>
       </div>

@@ -4,7 +4,7 @@ import { ProductCartProps } from './ProductCart.props';
 
 function ProductCart(props: ProductCartProps) {
   return (
-    <Link to="/" className={styles['link']}>
+    <Link to={`/product/${props.id}`} className={styles['link']}>
       <div className={styles['cart']}>
         <div className={styles['head']} style={{ backgroundImage: `url('${props.image}')` }}>
           <div className={styles['price']}>
