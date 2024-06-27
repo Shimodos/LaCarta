@@ -5,18 +5,15 @@ import ProductCart from '../../ProductCart/ProductCart';
 import { API } from '../../../helpers/API.ts';
 import { Product } from '../../../interfaces/product.interfaces.ts';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export function Menu(): JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
 
   const getMenu = async () => {
     try {
-      const res = await fetch(`${API}/products`);
-      if (!res.ok) {
-        throw new Error(`Could not fetch ${API}/products, received ${res.status}`);
-      }
-      const data = (await res.json()) as Product[];
-      console.log(data);
+      //axios
+      const { data } = await axios.get<Product[]>(`${API}/products`);
       setProducts(data);
     } catch (error) {
       console.error('Error:', error);
