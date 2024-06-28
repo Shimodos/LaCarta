@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { MenuList } from './MenuList/MenuList.tsx';
 
-export function Menu(): JSX.Element {
+function Menu(): JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
@@ -16,11 +16,11 @@ export function Menu(): JSX.Element {
     try {
       setIsLoading(true);
       //axios
-      await new Promise<void>((resolve) =>
-        setTimeout(() => {
-          resolve();
-        }, 2000),
-      );
+      // await new Promise<void>((resolve) =>
+      //   setTimeout(() => {
+      //     resolve();
+      //   }, 2000),
+      // );
       const { data } = await axios.get<Product[]>(`${API}/products`);
       setProducts(data);
       setIsLoading(false);
@@ -53,3 +53,5 @@ export function Menu(): JSX.Element {
     </>
   );
 }
+
+export default Menu;

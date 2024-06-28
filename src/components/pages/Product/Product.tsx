@@ -1,12 +1,17 @@
-import { useParams } from 'react-router-dom';
-import Headling from '../../Headling/Headling';
+import { Await, useLoaderData } from 'react-router-dom';
+import { Product as ProductType } from '../../../interfaces/product.interfaces';
+import { Suspense } from 'react';
 
 export function Product(): JSX.Element {
-  const { id } = useParams<{ id: string }>();
+  const data = useLoaderData() as { data: ProductType };
 
   return (
-    <>
-      <Headling>Product - {id}</Headling>
-    </>
+    <Suspense fallback={<>Loading...</>}>
+      <>
+        <Await resolve={data.data}>
+          {({ data }: { data: ProductType }) => <>Product - {data.name}</>}
+        </Await>
+      </>
+    </Suspense>
   );
 }
