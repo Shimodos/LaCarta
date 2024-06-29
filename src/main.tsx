@@ -6,8 +6,11 @@ import { Cart } from './components/pages/Cart/Cart.tsx';
 import { Error as ErrorPage } from './components/pages/Error/Erorr.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
 import { Product } from './components/pages/Product/Product.tsx';
+import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
 import axios from 'axios';
 import { API } from './helpers/API.ts';
+import { Login } from './components/pages/Login/Login.tsx';
+import { Register } from './components/pages/Register/Register.tsx';
 
 const Menu = lazy(() => import('./components/pages/Menu/Menu.tsx'));
 
@@ -40,6 +43,20 @@ const router = createBrowserRouter([
               .catch((errorElement) => errorElement),
           });
         },
+      },
+    ],
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
       },
     ],
   },
