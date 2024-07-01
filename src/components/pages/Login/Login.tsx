@@ -3,25 +3,61 @@ import Button from '../../Button/Button';
 import Headling from '../../Headling/Headling';
 import Input from '../../Input/Input';
 import styles from './Login.module.css';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import { API } from '../../../helpers/API';
+import axios from 'axios';
+
+export type LoginForm = {
+  email: {
+    value: string;
+  };
+  password: {
+    value: string;
+  };
+};
 
 export function Login(): JSX.Element {
-  const submitHandler = (e: FormEvent) => {
+  const [error, setError] = useState<string | null>(null);
+
+  const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(e);
+    setError(null);
+    const target = e.target as typeof e.target & LoginForm;
+    const { email, password } = target;
+    console.log(email.value);
+    console.log(password.value);
+    await sendLoginRequest(email.value, password.value);
+  };
+
+  // `${API}/pizza-api-demo/auth/login`
+
+  const sendLoginRequest = async (email: string, password: string) => {
+    try {
+      const { data } = await axios.post(`${API}/auth/login`, {
+        email,
+        password,
+      });
+      console.log(data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+        setError(error.response?.data.message);
+      }
+    }
   };
 
   return (
-    <div className={styles['login']} onSubmit={submitHandler}>
+    <div className={styles['login']}>
       <Headling>Login</Headling>
-      <form className={styles['form']}>
+      {error && <div className={styles['error']}>{error}</div>}
+      <form className={styles['form']} onSubmit={submitHandler}>
         <div className={styles['field']}>
           <label htmlFor="email"> You email</label>
-          <Input id="email" type="email" placeholder="email" />
+          <Input id="email" name="email" type="email" placeholder="email" />
         </div>
         <div className={styles['field']}>
           <label htmlFor="password">You password</label>
-          <Input id="password" type="password" placeholder="password" />
+          <Input id="password" name="password" type="password" placeholder="password" />
         </div>
 
         <Button className={styles['button']} appearence="big" type="submit">

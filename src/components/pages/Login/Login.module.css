@@ -44,3 +44,13 @@
   color: var(--primary-color);
   text-decoration: none;
 }
+
+.error {
+  background: rgb(248, 93, 93);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  padding: 20px;
+  border-radius: 10px;
+  color: var(--white-color);
+}
