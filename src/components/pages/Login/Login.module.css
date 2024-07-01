@@ -1,0 +1,46 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #9796A1
+}
+
+.button {
+  margin-top: 40px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  color: var(--text-secondary-color);
+}
+
+.links a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
