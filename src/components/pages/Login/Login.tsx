@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../Button/Button';
 import Headling from '../../Headling/Headling';
 import Input from '../../Input/Input';
@@ -6,6 +6,7 @@ import styles from './Login.module.css';
 import { FormEvent, useState } from 'react';
 import { API } from '../../../helpers/API';
 import axios from 'axios';
+import { LoginRsponse } from '../../../interfaces/auth.interfaces';
 
 export type LoginForm = {
   email: {
@@ -18,6 +19,7 @@ export type LoginForm = {
 
 export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,11 +35,13 @@ export function Login(): JSX.Element {
 
   const sendLoginRequest = async (email: string, password: string) => {
     try {
-      const { data } = await axios.post(`${API}/auth/login`, {
+      const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, {
         email,
         password,
       });
       console.log(data);
+      localStorage.setItem('token', data.access_token);
+      navigate('/');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error);
