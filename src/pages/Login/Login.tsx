@@ -1,12 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../../Button/Button';
-import Headling from '../../Headling/Headling';
-import Input from '../../Input/Input';
+import Button from '../../components/Button/Button';
+import Headling from '../../components/Headling/Headling';
+import Input from '../../components/Input/Input';
 import styles from './Login.module.css';
 import { FormEvent, useState } from 'react';
-import { API } from '../../../helpers/API';
+import { API } from '../../helpers/API';
 import axios from 'axios';
-import { LoginRsponse } from '../../../interfaces/auth.interfaces';
+import { LoginRsponse } from '../../interfaces/auth.interfaces';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import { userActions } from '../../store/user.slice';
 
 export type LoginForm = {
   email: {
@@ -20,6 +23,7 @@ export type LoginForm = {
 export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,6 +45,7 @@ export function Login(): JSX.Element {
       });
       console.log(data);
       localStorage.setItem('token', data.access_token);
+      dispatch(userActions.addJwt(data.access_token));
       navigate('/');
     } catch (error) {
       if (axios.isAxiosError(error)) {

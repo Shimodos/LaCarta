@@ -2,17 +2,19 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, defer, RouterProvider } from 'react-router-dom';
-import { Cart } from './components/pages/Cart/Cart.tsx';
-import { Error as ErrorPage } from './components/pages/Error/Erorr.tsx';
+import { Cart } from './pages/Cart/Cart.tsx';
+import { Error as ErrorPage } from './pages/Error/Erorr.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
-import { Product } from './components/pages/Product/Product.tsx';
+import { Product } from './pages/Product/Product.tsx';
 import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
 import axios from 'axios';
 import { API } from './helpers/API.ts';
-import { Login } from './components/pages/Login/Login.tsx';
-import { Register } from './components/pages/Register/Register.tsx';
+import { Login } from './pages/Login/Login.tsx';
+import { Register } from './pages/Register/Register.tsx';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
-const Menu = lazy(() => import('./components/pages/Menu/Menu.tsx'));
+const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 );

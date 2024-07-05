@@ -1,5 +1,5 @@
 import styles from './MenuList.module.css';
-import ProductCart from '../../../ProductCart/ProductCart';
+import ProductCart from '../../../components/ProductCart/ProductCart';
 import { MenuListProps } from './MenuList.props';
 
 export function MenuList({ products }: MenuListProps) {

@@ -1,4 +1,4 @@
-import Headling from '../../Headling/Headling';
+import Headling from '../../components/Headling/Headling';
 
 export function Cart(): JSX.Element {
   return (

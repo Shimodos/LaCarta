@@ -1,8 +1,8 @@
-import Headling from '../../Headling/Headling';
+import Headling from '../../components/Headling/Headling.tsx';
 import styles from './Menu.module.css';
-import Search from '../../Search/Search';
-import { API } from '../../../helpers/API.ts';
-import { Product } from '../../../interfaces/product.interfaces.ts';
+import Search from '../../components/Search/Search.tsx';
+import { API } from '../../helpers/API.ts';
+import { Product } from '../../interfaces/product.interfaces.ts';
 import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { MenuList } from './MenuList/MenuList.tsx';
