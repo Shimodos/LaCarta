@@ -44,7 +44,7 @@ export function Login(): JSX.Element {
         password,
       });
       console.log(data);
-      localStorage.setItem('token', data.access_token);
+      // localStorage.setItem('token', data.access_token);
       dispatch(userActions.addJwt(data.access_token));
       navigate('/');
     } catch (error) {
