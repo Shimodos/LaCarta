@@ -11,6 +11,7 @@ export const JWT_PERSISTENT_STATE_KEY = 'userData';
 export interface UserState {
   jwt: string | null;
   loginError?: string | null;
+  registerError?: string | null;
   profile?: Profile;
 }
 
@@ -26,7 +27,10 @@ export const login = createAsyncThunk(
   'user/login',
   async (params: { email: string; password: string }) => {
     try {
-      const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, params);
+      const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, {
+        email: params.email,
+        password: params.password,
+      });
 
       return data;
     } catch (error) {
@@ -51,6 +55,25 @@ export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
   },
 );
 
+export const register = createAsyncThunk(
+  'user/register',
+  async (params: { email: string; password: string; name: string }) => {
+    try {
+      const { data } = await axios.post<LoginRsponse>(`${API}/auth/register`, {
+        email: params.email,
+        password: params.password,
+        name: params.name,
+      });
+
+      return data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new Error(error.response?.data.message);
+      }
+    }
+  },
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -61,6 +84,9 @@ export const userSlice = createSlice({
     },
     clearLoginError: (state) => {
       state.loginError = null;
+    },
+    clearRegisterError: (state) => {
+      state.registerError = null;
     },
   },
 
@@ -77,6 +103,15 @@ export const userSlice = createSlice({
     });
     builder.addCase(getProfile.fulfilled, (state, action) => {
       state.profile = action.payload;
+    });
+    builder.addCase(register.fulfilled, (state, action) => {
+      if (!action.payload) {
+        return;
+      }
+      state.jwt = action.payload.access_token;
+    });
+    builder.addCase(register.rejected, (state, action) => {
+      state.registerError = action.error.message;
     });
   },
 });
