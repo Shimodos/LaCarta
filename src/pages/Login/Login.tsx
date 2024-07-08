@@ -3,13 +3,11 @@ import Button from '../../components/Button/Button';
 import Headling from '../../components/Headling/Headling';
 import Input from '../../components/Input/Input';
 import styles from './Login.module.css';
-import { FormEvent, useState } from 'react';
-import { API } from '../../helpers/API';
-import axios from 'axios';
-import { LoginRsponse } from '../../interfaces/auth.interfaces';
-import { useDispatch } from 'react-redux';
+import { FormEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store/store';
-import { userActions } from '../../store/user.slice';
+import { login } from '../../store/user.slice';
+import { RootState } from '../../store/store';
 
 export type LoginForm = {
   email: {
@@ -24,6 +22,13 @@ export function Login(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const jwt = useSelector((state: RootState) => state.user.jwt);
+
+  useEffect(() => {
+    if (jwt) {
+      navigate('/');
+    }
+  }, [jwt, navigate]);
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -38,21 +43,22 @@ export function Login(): JSX.Element {
   // `${API}/pizza-api-demo/auth/login`
 
   const sendLoginRequest = async (email: string, password: string) => {
-    try {
-      const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, {
-        email,
-        password,
-      });
-      console.log(data);
-      // localStorage.setItem('token', data.access_token);
-      dispatch(userActions.addJwt(data.access_token));
-      navigate('/');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-        setError(error.response?.data.message);
-      }
-    }
+    dispatch(login({ email, password }));
+    // try {
+    //   const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, {
+    //     email,
+    //     password,
+    //   });
+    //   console.log(data);
+    //   // localStorage.setItem('token', data.access_token);
+    //   dispatch(userActions.addJwt(data.access_token));
+    //   navigate('/');
+    // } catch (error) {
+    //   if (axios.isAxiosError(error)) {
+    //     console.log(error);
+    //     setError(error.response?.data.message);
+    //   }
+    // }
   };
 
   return (
