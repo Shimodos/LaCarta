@@ -4,11 +4,14 @@ import { API } from '../helpers/API';
 import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginRsponse } from '../interfaces/auth.interfaces';
+import { Profile } from '../interfaces/user.interface';
+import { RootState } from './store';
 
 export const JWT_PERSISTENT_STATE_KEY = 'userData';
 export interface UserState {
   jwt: string | null;
   loginError?: string | null;
+  profile?: Profile;
 }
 
 export interface UserPersistedState {
@@ -31,6 +34,20 @@ export const login = createAsyncThunk(
         throw new Error(error.response?.data.message);
       }
     }
+  },
+);
+
+export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
+  'user/getprofile',
+  async (_, thunkApi) => {
+    const jwt = thunkApi.getState().user.jwt;
+    const { data } = await axios.get<Profile>(`${API}/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+
+    return data;
   },
 );
 
@@ -57,6 +74,9 @@ export const userSlice = createSlice({
     builder.addCase(login.rejected, (state, action) => {
       state.loginError = action.error.message;
       console.log(action);
+    });
+    builder.addCase(getProfile.fulfilled, (state, action) => {
+      state.profile = action.payload;
     });
   },
 });
