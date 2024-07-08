@@ -1,14 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { loadState } from './storeage';
 import { API } from '../helpers/API';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginRsponse } from '../interfaces/auth.interfaces';
 
 export const JWT_PERSISTENT_STATE_KEY = 'userData';
 export interface UserState {
   jwt: string | null;
-  loginStaate: null | rejected;
+  loginError?: string | null;
 }
 
 export interface UserPersistedState {
@@ -17,15 +17,20 @@ export interface UserPersistedState {
 
 const initialState: UserState = {
   jwt: loadState<UserPersistedState>(JWT_PERSISTENT_STATE_KEY)?.jwt ?? null,
-  loginStaate: null,
 };
 
 export const login = createAsyncThunk(
   'user/login',
   async (params: { email: string; password: string }) => {
-    const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, params);
+    try {
+      const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, params);
 
-    return data;
+      return data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new Error(error.response?.data.message);
+      }
+    }
   },
 );
 
@@ -37,15 +42,21 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.jwt = null;
     },
+    clearLoginError: (state) => {
+      state.loginError = null;
+    },
   },
 
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action: PayloadAction<LoginRsponse>) => {
+    builder.addCase(login.fulfilled, (state, action) => {
+      if (!action.payload) {
+        return;
+      }
       state.jwt = action.payload.access_token;
     });
-    builder.addCase(login.rejected, (state, error) => {
-      console.log(error);
-      state.loginStaate = 'rejected';
+    builder.addCase(login.rejected, (state, action) => {
+      state.loginError = action.error.message;
+      console.log(action);
     });
   },
 });

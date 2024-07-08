@@ -6,7 +6,7 @@ import styles from './Login.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store/store';
-import { login } from '../../store/user.slice';
+import { login, userActions } from '../../store/user.slice';
 import { RootState } from '../../store/store';
 
 export type LoginForm = {
@@ -19,10 +19,9 @@ export type LoginForm = {
 };
 
 export function Login(): JSX.Element {
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const jwt = useSelector((state: RootState) => state.user.jwt);
+  const { jwt, loginError } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (jwt) {
@@ -32,7 +31,7 @@ export function Login(): JSX.Element {
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
+    dispatch(userActions.clearLoginError());
     const target = e.target as typeof e.target & LoginForm;
     const { email, password } = target;
     console.log(email.value);
@@ -44,27 +43,12 @@ export function Login(): JSX.Element {
 
   const sendLoginRequest = async (email: string, password: string) => {
     dispatch(login({ email, password }));
-    // try {
-    //   const { data } = await axios.post<LoginRsponse>(`${API}/auth/login`, {
-    //     email,
-    //     password,
-    //   });
-    //   console.log(data);
-    //   // localStorage.setItem('token', data.access_token);
-    //   dispatch(userActions.addJwt(data.access_token));
-    //   navigate('/');
-    // } catch (error) {
-    //   if (axios.isAxiosError(error)) {
-    //     console.log(error);
-    //     setError(error.response?.data.message);
-    //   }
-    // }
   };
 
   return (
     <div className={styles['login']}>
       <Headling>Login</Headling>
-      {error && <div className={styles['error']}>{error}</div>}
+      {loginError && <div className={styles['error']}>{loginError}</div>}
       <form className={styles['form']} onSubmit={submitHandler}>
         <div className={styles['field']}>
           <label htmlFor="email"> You email</label>
