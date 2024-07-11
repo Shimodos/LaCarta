@@ -11,8 +11,13 @@ function Menu(): JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const [search, setSearch] = useState<string>('');
 
-  const getMenu = async () => {
+  useEffect(() => {
+    getMenu(search);
+  }, [search]);
+
+  const getMenu = async (name?: string) => {
     try {
       setIsLoading(true);
       //axios
@@ -21,7 +26,11 @@ function Menu(): JSX.Element {
       //     resolve();
       //   }, 2000),
       // );
-      const { data } = await axios.get<Product[]>(`${API}/products`);
+      const { data } = await axios.get<Product[]>(`${API}/products`, {
+        params: {
+          name,
+        },
+      });
       setProducts(data);
       setIsLoading(false);
     } catch (error) {
@@ -35,20 +44,21 @@ function Menu(): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    getMenu();
-  }, []);
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
 
   return (
     <>
       <div className={styles['head']}>
         <Headling>Menu</Headling>
-        <Search placeholder="Enter a dish or composition" />
+        <Search placeholder="Enter a dish or composition" onChange={handleSearch} />
       </div>
       <div>
         {error && <div>{error}</div>}
-        {!isLoading && <MenuList products={products} />}
+        {!isLoading && products.length > 0 && <MenuList products={products} />}
         {isLoading && <div>Loading...</div>}
+        {!isLoading && products.length === 0 && <div>No products found</div>}
       </div>
     </>
   );
