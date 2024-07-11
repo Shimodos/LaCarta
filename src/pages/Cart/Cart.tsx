@@ -6,6 +6,7 @@ import { Product } from '../../interfaces/product.interfaces';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API } from '../../helpers/API';
+import styles from './Cart.module.css';
 
 export function Cart(): JSX.Element {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
@@ -27,7 +28,7 @@ export function Cart(): JSX.Element {
 
   return (
     <>
-      <Headling>Cart</Headling>
+      <Headling className={styles['headling']}>Cart</Headling>
       <div>
         {items.map((item) => {
           const product = cartProducts.find((product) => product.id === item.id);
