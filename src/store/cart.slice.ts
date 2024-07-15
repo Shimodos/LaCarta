@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { loadState } from './storeage';
 
+export const CART_PERSISTENT_STATE_KEY = 'cartData';
 export interface CartItem {
   id: number;
   count: number;
@@ -10,11 +12,7 @@ export interface CartState {
   items: CartItem[];
 }
 
-export interface UserPersistedState {
-  jwt: string | null;
-}
-
-const initialState: CartState = {
+const initialState: CartState = loadState<CartState>(CART_PERSISTENT_STATE_KEY) ?? {
   items: [],
 };
 
@@ -22,6 +20,9 @@ export const cartSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    clean: (state) => {
+      state.items = [];
+    },
     delete: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },

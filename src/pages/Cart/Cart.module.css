@@ -1,3 +1,62 @@
 .headling {
   margin-bottom: 40px;
 }
+
+.line {
+  max-width: 512px;
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 0;
+}
+
+.hr {
+  border: 1px solid #e0e0e0;
+  max-width: 512px;
+  margin: 0;
+}
+
+.text {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: --var(--text-color);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  font-style: normal;
+}
+
+.price {
+  color: var(--text-color);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 26px;
+  font-style: normal;
+}
+
+.currency {
+  color: rgb(151, 150, 161);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+}
+
+.items {
+  background: var(--primary-color);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.checkout {
+  max-width: 512px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
